@@ -129,6 +129,7 @@ class DrumkitUI {
             const progressBar = document.createElement('span');
             progressBar.addEventListener('animationend', () => {
                 progressBar.style.animation = null;
+                this.chanelsDOMElements[i].playBtn.disabled = false;
             })
             progressBarContainer.appendChild(progressBar);
             chanelContainer.appendChild(progressBarContainer);
@@ -174,6 +175,17 @@ class DrumkitUI {
 
     stopRecording(chanelIndex: number) {
         this.chanelsDOMElements[chanelIndex].playBtn.classList.remove('stopBtn');
+        const chanel = this.chanels[chanelIndex];
+        const recordingTime = chanel[chanel.length - 1].time - chanel[0].time;
+        chanel.forEach((sound: ISound) => {
+            const timeMoment = document.createElement('time');
+            const percentageTime = (sound.time - chanel[0].time) / recordingTime * 100;
+            console.log(percentageTime)
+            timeMoment.className = "timeMoment";
+            timeMoment.style.left = `${percentageTime}%`;
+            this.chanelsDOMElements[chanelIndex].progressBar.parentElement.appendChild(timeMoment);
+
+        })
         this.activeChanel = null;
     }
 

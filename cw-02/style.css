@@ -186,6 +186,14 @@ main {
     /* animation: progressBarAnim 5s forwards linear; */
 }
 
+.timeMoment {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    width: 2px;
+    background: #49abff;
+}
+
 @keyframes progressBarAnim {
     from {
         transform: scaleX(0);
