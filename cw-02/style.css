@@ -152,13 +152,17 @@ main {
     top: calc(50% - 7px);
 }
 
-.playBtn[disabled] {
+.playBtn[disabled], .recordBtn[disabled] {
     box-shadow: none;
     background: #dadce0;
 }
 
 .playBtn[disabled]::after {
     border-left: 16px solid grey;
+}
+
+.recordBtn[disabled]::after {
+    background: grey;
 }
 
 .playBtn.stopBtn::after {

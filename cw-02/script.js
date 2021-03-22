@@ -126,6 +126,9 @@ class DrumkitUI {
                 key: null
             }];
         this.activeChanel = chanelIndex;
+        this.chanelsDOMElements.forEach(el => {
+            el.recordBtn.disabled = true;
+        });
         this.chanelsDOMElements[chanelIndex].playBtn.disabled = false;
         this.chanelsDOMElements[chanelIndex].playBtn.classList.add('stopBtn');
     }
@@ -150,14 +153,23 @@ class DrumkitUI {
         this.chanelsDOMElements[chanelIndex].playBtn.classList.remove('stopBtn');
         const chanel = this.chanels[chanelIndex];
         const recordingTime = chanel[chanel.length - 1].time - chanel[0].time;
-        chanel.forEach((sound) => {
-            const timeMoment = document.createElement('time');
-            const percentageTime = (sound.time - chanel[0].time) / recordingTime * 100;
-            console.log(percentageTime);
-            timeMoment.className = "timeMoment";
-            timeMoment.style.left = `${percentageTime}%`;
-            this.chanelsDOMElements[chanelIndex].progressBar.parentElement.appendChild(timeMoment);
+        this.chanelsDOMElements[chanelIndex].progressBar.parentElement.querySelectorAll('time').forEach(v => v.remove());
+        this.chanelsDOMElements.forEach(el => {
+            el.recordBtn.disabled = false;
         });
+        if (recordingTime) {
+            chanel.forEach((sound) => {
+                const timeMoment = document.createElement('time');
+                const percentageTime = (sound.time - chanel[0].time) / recordingTime * 100;
+                console.log(percentageTime);
+                timeMoment.className = "timeMoment";
+                timeMoment.style.left = `${percentageTime}%`;
+                this.chanelsDOMElements[chanelIndex].progressBar.parentElement.appendChild(timeMoment);
+            });
+        }
+        else {
+            this.chanelsDOMElements[chanelIndex].playBtn.disabled = true;
+        }
         this.activeChanel = null;
     }
     initPlayingBehavior(chanelIndex) {
