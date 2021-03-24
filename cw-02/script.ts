@@ -30,7 +30,7 @@ class DrumkitUI {
         recordBtn: HTMLButtonElement,
         progressBar: HTMLSpanElement
     }[] = [];
-    activeChanel: number = null;
+    activeChanels: number[] = [];
     constructor(sounds: HTMLAudioElement[]) {
         // on init map sound to class variable and perpare event listener
         this.sounds = sounds.map((element) => ({
@@ -61,10 +61,12 @@ class DrumkitUI {
 
     onClick(key: string, ev: MouseEvent) {
         const time = ev.timeStamp;
-        if (this.activeChanel !== null) {
-            this.chanels[this.activeChanel].push({
-                key: key,
-                time: time
+        if (this.activeChanels.length !== 0) {
+            this.activeChanels.forEach((chanelIndex) => {
+                this.chanels[chanelIndex].push({
+                    key: key,
+                    time: time
+                });
             });
         }
         this.playSound(key);
@@ -73,10 +75,12 @@ class DrumkitUI {
     onKeyDown(ev: KeyboardEvent) {
         const key = ev.key;
         const time = ev.timeStamp;
-        if (this.activeChanel !== null) {
-            this.chanels[this.activeChanel].push({
-                key: key,
-                time: time
+        if (this.activeChanels.length !== 0) {
+            this.activeChanels.forEach((chanelIndex) => {
+                this.chanels[chanelIndex].push({
+                    key: key,
+                    time: time
+                });
             });
         }
         console.log(this.chanels);
@@ -149,16 +153,14 @@ class DrumkitUI {
             time: event.timeStamp,
             key: null
         }];
-        this.activeChanel = chanelIndex;
-        this.chanelsDOMElements.forEach(el => {
-            el.recordBtn.disabled = true;
-        })
+        this.activeChanels.push(chanelIndex);
+        this.chanelsDOMElements[chanelIndex].recordBtn.disabled = true;
         this.chanelsDOMElements[chanelIndex].playBtn.disabled = false;
         this.chanelsDOMElements[chanelIndex].playBtn.classList.add('stopBtn');
     }
 
     onPlayStopChanel(chanelIndex: number) {
-        if (this.activeChanel === chanelIndex) {
+        if (this.activeChanels.includes(chanelIndex)) {
             this.stopRecording(chanelIndex);
         }
         else {
@@ -196,7 +198,10 @@ class DrumkitUI {
         } else {
             this.chanelsDOMElements[chanelIndex].playBtn.disabled = true;
         }
-        this.activeChanel = null;
+        const index = this.activeChanels.indexOf(chanelIndex);
+        if (index >= 0) {
+            this.activeChanels.splice(index, 1);
+        }
     }
 
     initPlayingBehavior(chanelIndex: number) {
