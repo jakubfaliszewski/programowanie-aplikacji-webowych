@@ -1,4 +1,4 @@
-https://jakubfaliszewski.github.io/programowanie-aplikacji-webowych/cw-01/
+https://jakubfaliszewski.github.io/programowanie-aplikacji-webowych/cw-02/
 ## Projekt 2 - DrumKit
 
 Przykładowe dźwięki:
