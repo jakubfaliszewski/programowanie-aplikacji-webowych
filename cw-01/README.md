@@ -1,3 +1,5 @@
+https://jakubfaliszewski.github.io/programowanie-aplikacji-webowych/cw-01/
+
 MIN
 
 1. Utwórz w html-a ze statycznymi 4 inputami tekstowymi lub typu number
