@@ -1,4 +1,6 @@
-##Projekt 2 - DrumKit
+https://jakubfaliszewski.github.io/programowanie-aplikacji-webowych/cw-01/
+## Projekt 2 - DrumKit
+
 Przykładowe dźwięki:
 `Dźwięki z 99sounds.org`
 
