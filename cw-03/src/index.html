@@ -1,22 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cw-02 - pogodynka</title>
-  </head>
-  <body>
 
-    <main>
-      <div class="toast">
-        <p>Takie miasto nie istnieje</p>
-      </div>
-      <div class="inputWrapper">
-        <input id="cityInput" type="text" placeholder="Wpisujcie miasta [*]"/>
-        <button id="apiButton" type="button">Dodaj</button>
-      </div>
-    </main>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <title>Cw-02 - pogodynka</title>
+</head>
 
-    <script src="index.js"></script>
-  </body>
+<body>
+
+  <div class="toast" id="errorToast">
+    <p>Ooopsie, this city probably does not exist ¯\_(ツ)_/¯</p>
+  </div>
+  <main>
+    <div class="main">
+      <p class="main-temp" id="mainTemp">21 C</p>
+      <h1 class="main-city" id="mainCity">Warsaw</h1>
+      <p>sunny</p>
+    </div>
+  </main>
+  <aside>
+    <form class="inputWrapper">
+      <input id="cityInput" class="input" type="text" placeholder="Add new city" />
+      <button id="apiButton" class="button" type="submit"></button>
+    </form>
+    <ul id="cityList" class="city-list">
+
+    </ul>
+  </aside>
+
+  <script src="index.js"></script>
+</body>
+
 </html>

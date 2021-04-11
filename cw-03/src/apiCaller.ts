@@ -1,6 +1,6 @@
 import { IWeatherData } from './interface';
 
-const DATA_KEY = "weather_data"
+export const DATA_KEY = "weather_data"
 const API_KEY = "cbeeb4917456a9dc5bef570967628521";
 
 export class ApiCaller {
@@ -20,7 +20,7 @@ export class ApiCaller {
     }
 
     async getWeatherData(city: string): Promise<IWeatherData> {
-        const apiURL = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`;
+        const apiURL = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
         const weatherResp = await fetch(apiURL);
         const weatherData: IWeatherData = await weatherResp.json();
 
