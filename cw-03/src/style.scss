@@ -1,17 +1,18 @@
-@import 'reset';
+@import "reset";
 
-html, body {
+html,
+body {
     height: 100%;
-    margin: 0; 
+    margin: 0;
     padding: 0;
 }
 
 html body {
-    background: linear-gradient(to bottom, #56ccf2, #2f80ed); 
+    background: linear-gradient(to bottom, #56ccf2, #2f80ed);
     font-family: sans-serif;
     display: flex;
     justify-content: flex-end;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
 }
 // MAIN
 main {
@@ -29,9 +30,16 @@ main {
             font-size: 130px;
             letter-spacing: -12px;
         }
-        &-city {
-            font-size: 60px;
-            margin-left: 30px;
+        &-info {
+            display: flex;
+            gap: 40px;
+            &-city {
+                font-size: 60px;
+                margin-left: 30px;
+            }
+            &-weather {
+                font-size: 20px;
+            }
         }
     }
 }
@@ -42,6 +50,8 @@ aside {
     background: rgba(#000, 0.3);
     padding: 20px;
     color: rgba(#ffffff, 0.7);
+    margin: 10px;
+    border-radius: 20px;
 }
 
 .toast {
@@ -81,12 +91,12 @@ aside {
             color: rgba(white, 0.8);
         }
     }
-    
+
     .button {
         border: 0;
         padding: 4px 8px;
         border-radius: 15px;
-        background: rgba(255,255,255,0.1);
+        background: rgba(255, 255, 255, 0.1);
         position: relative;
         width: 30px;
         height: 30px;
@@ -103,15 +113,23 @@ aside {
             left: 50%;
             transform: translate(-50%, -50%);
         }
-        
+
         &:before {
             height: 14px;
             width: 2px;
         }
-    
+
         &:after {
             height: 2px;
             width: 14px;
+        }
+
+        &:disabled {
+            background: none;
+            &:after,
+            &:before {
+                background: rgba(white, 0.5);
+            }
         }
     }
 }
@@ -134,14 +152,27 @@ aside {
         text-align: left;
         cursor: pointer;
         border-radius: 5px;
+        transition: background-color 0.2s;
         &:hover {
             background-color: rgba(white, 0.1);
         }
+        &:focus {
+            outline: 0;
+            box-shadow: 0px 0px 8px rgba(white, 0.3);
+        }
 
-        >div {
+        > div {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            > div {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                > p {
+                    font-size: 2em;
+                }
+            }
         }
 
         &-removeBtn {
@@ -155,6 +186,7 @@ aside {
             flex-shrink: 0;
             cursor: pointer;
             background: transparent;
+            transition: background 0.2s;
 
             &:hover {
                 background-color: rgba(216, 50, 50, 0.8);
@@ -169,12 +201,12 @@ aside {
                 left: 50%;
                 transform: translate(-50%, -50%) rotate(45deg);
             }
-            
+
             &:before {
                 height: 10px;
                 width: 2px;
             }
-        
+
             &:after {
                 height: 2px;
                 width: 10px;
@@ -182,7 +214,6 @@ aside {
         }
     }
 }
-
 
 @keyframes showToast {
     0% {
@@ -206,4 +237,3 @@ aside {
         display: none;
     }
 }
-
