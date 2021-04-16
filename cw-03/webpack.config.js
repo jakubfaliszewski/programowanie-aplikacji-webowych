@@ -18,6 +18,11 @@ module.exports = {
         from: "src/*.html",
         to: "",
         flatten: true
+      },
+      {
+        from: "src/assets/*",
+        to: "assets/",
+        flatten: true
       }
     ])
   ],
