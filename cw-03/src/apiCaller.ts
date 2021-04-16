@@ -26,6 +26,7 @@ export class ApiCaller {
             const apiURL = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
             const weatherResp = await fetch(apiURL);
             const weatherData: IWeatherData = await weatherResp.json();
+            this.saveData(weatherData);
 
             return weatherData;
         }));
@@ -44,6 +45,8 @@ export class ApiCaller {
         const apiURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude=minutely,hourly&appid=${API_KEY}&units=metric`;
         const forecastResp = await fetch(apiURL);
         const forecastData: IForecastData = await forecastResp.json();
+        // we don't need more daily data
+        forecastData.daily = forecastData.daily.slice(0, 6);
 
         return forecastData;
     }

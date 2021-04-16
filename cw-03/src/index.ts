@@ -24,6 +24,7 @@ export class Main {
     }
     
     initRefresher(){
+        // refresh data every minute
         setInterval(() => {
             this.apiCaller.refreshData().then(currentData => {
                 this.weatherData = currentData;
@@ -32,7 +33,7 @@ export class Main {
             if(this.activeCity) {
                 this.setActiveCity();
             }
-        }, 5000);
+        }, 60000);
     }
 
     bindInputEvents() {

@@ -69,12 +69,16 @@ export interface IForecastDaily extends Omit<IForecast, 'feels_like'|'temp'> {
         eve: number,
         morn: number,
         night: number,
+        min?: number,
+        max?: number,
     }
     feels_like: {
         day: number,
         eve: number,
         morn: number,
         night: number,
+        min?: number,
+        max?: number,
     },
     moon_phase: number,
     moonrise: number,
@@ -90,5 +94,5 @@ export interface IForecastData {
     lat: number,
     lon: number,
     timezone: string,
-    timezone_offset: 0
+    timezone_offset: number
 }
