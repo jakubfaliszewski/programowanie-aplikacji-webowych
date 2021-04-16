@@ -23,7 +23,7 @@ export class ApiCaller {
         const currentCities = (JSON.parse(localStorage.getItem(DATA_KEY)) as IWeatherData[])
             ?.map(v => v.name) || [];
         const newCities = Promise.all(currentCities.map(async (city) => {
-            const apiURL = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
+            const apiURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
             const weatherResp = await fetch(apiURL);
             const weatherData: IWeatherData = await weatherResp.json();
             this.saveData(weatherData);
@@ -34,7 +34,7 @@ export class ApiCaller {
     }
 
     async getWeatherData(city: string): Promise<IWeatherData> {
-        const apiURL = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
+        const apiURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
         const weatherResp = await fetch(apiURL);
         const weatherData: IWeatherData = await weatherResp.json();
 

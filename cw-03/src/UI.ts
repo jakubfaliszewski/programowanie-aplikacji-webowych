@@ -42,6 +42,7 @@ export class UI {
     // main UI
     renderMainView(forecastData: IForecastData, activeCity: IWeatherData) {
         if (forecastData) {
+            document.getElementById('main').classList.add('main--visible');
             this.switchTheme(activeCity.weather[0].id);
             this.renderForecast(forecastData);
             // general

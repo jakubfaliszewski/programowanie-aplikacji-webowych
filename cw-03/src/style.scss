@@ -35,18 +35,22 @@ main {
     align-items: flex-start;
     box-sizing: border-box;
     padding: 40px;
-    .current {
+       .current {
         width: 100%;
         padding: 16px;
         background: rgba(black, 0.1);
         border-radius: 10px;
     }
-    .main {
+    .main {  
         width: 100%;
-        display: flex;
+        display: none;
         align-items: flex-start;
         color: white;
         flex-direction: column;
+        &--visible {
+            display: flex;
+        }
+    
         &-icon {
             position: absolute;
             width: 320px;
