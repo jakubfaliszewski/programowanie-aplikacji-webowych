@@ -1,16 +1,19 @@
-class Drumkit {
-    constructor() {
+var Drumkit = /** @class */ (function () {
+    function Drumkit() {
+        var _this = this;
         this.sounds = [];
-        document.querySelectorAll('audio').forEach((el) => {
-            this.sounds.push(el);
+        document.querySelectorAll('audio').forEach(function (el) {
+            _this.sounds.push(el);
         });
         console.log(this.sounds);
         new DrumkitUI(this.sounds);
     }
-}
-const CHANELS_COUNT = 4;
-class DrumkitUI {
-    constructor(sounds) {
+    return Drumkit;
+}());
+var CHANELS_COUNT = 4;
+var DrumkitUI = /** @class */ (function () {
+    function DrumkitUI(sounds) {
+        var _this = this;
         this.statsSection = document.getElementById('UI-section');
         this.chanels = [[]];
         this.sounds = [];
@@ -18,31 +21,32 @@ class DrumkitUI {
         this.chanelsDOMElements = [];
         this.activeChanel = null;
         // on init map sound to class variable and perpare event listener
-        this.sounds = sounds.map((element) => ({
-            element,
+        this.sounds = sounds.map(function (element) { return ({
+            element: element,
             key: element.dataset.key
-        }));
-        document.body.addEventListener('keypress', (ev) => this.onKeyDown(ev));
+        }); });
+        document.body.addEventListener('keypress', function (ev) { return _this.onKeyDown(ev); });
         this.renderButtons(sounds);
         this.createChanels();
     }
-    renderButtons(sounds) {
-        const container = document.getElementById('buttons');
+    DrumkitUI.prototype.renderButtons = function (sounds) {
+        var _this = this;
+        var container = document.getElementById('buttons');
         // create buttons in DOM
-        sounds.forEach(element => {
-            const soundBtn = document.createElement('button');
-            soundBtn.innerText = `${element.dataset.key}`;
+        sounds.forEach(function (element) {
+            var soundBtn = document.createElement('button');
+            soundBtn.innerText = "" + element.dataset.key;
             // assign ket to button, to recognize which is which
             soundBtn.dataset.soundKey = element.dataset.key;
             // here we need seperate event for each button
-            soundBtn.addEventListener('click', (ev) => this.onClick(element.dataset.key, ev));
+            soundBtn.addEventListener('click', function (ev) { return _this.onClick(element.dataset.key, ev); });
             // save button in class, just like sounds elements
-            this.soundButtons.push(soundBtn);
+            _this.soundButtons.push(soundBtn);
             container.appendChild(soundBtn);
         });
-    }
-    onClick(key, ev) {
-        const time = ev.timeStamp;
+    };
+    DrumkitUI.prototype.onClick = function (key, ev) {
+        var time = ev.timeStamp;
         if (this.activeChanel !== null) {
             this.chanels[this.activeChanel].push({
                 key: key,
@@ -50,10 +54,10 @@ class DrumkitUI {
             });
         }
         this.playSound(key);
-    }
-    onKeyDown(ev) {
-        const key = ev.key;
-        const time = ev.timeStamp;
+    };
+    DrumkitUI.prototype.onKeyDown = function (ev) {
+        var key = ev.key;
+        var time = ev.timeStamp;
         if (this.activeChanel !== null) {
             this.chanels[this.activeChanel].push({
                 key: key,
@@ -62,124 +66,133 @@ class DrumkitUI {
         }
         console.log(this.chanels);
         this.playSound(key);
-    }
-    playSound(key = null) {
+    };
+    DrumkitUI.prototype.playSound = function (key) {
+        if (key === void 0) { key = null; }
         // if there's no sound, do nothing
         // see this.activateChanel for example
         if (key) {
-            const btn = this.soundButtons.find((el) => el.dataset.soundKey === key);
-            const element = this.sounds.find((v) => v.key === key).element;
+            var btn = this.soundButtons.find(function (el) { return el.dataset.soundKey === key; });
+            var element = this.sounds.find(function (v) { return v.key === key; }).element;
             element.currentTime = 0;
             element.play();
             this.giveAnimation(btn);
         }
-    }
-    giveAnimation(btn) {
-        const animSpan = document.createElement('span');
+    };
+    DrumkitUI.prototype.giveAnimation = function (btn) {
+        var animSpan = document.createElement('span');
         btn.classList.add("playing");
         btn.appendChild(animSpan);
-        setTimeout(() => {
+        setTimeout(function () {
             btn.classList.remove("playing");
         }, 100);
-        animSpan.addEventListener('animationend', () => {
+        animSpan.addEventListener('animationend', function () {
             animSpan.remove();
         });
-    }
-    createChanels() {
-        const container = document.getElementById('chanels');
-        for (let i = 0; i < CHANELS_COUNT; i++) {
-            const chanelContainer = document.createElement('div');
+    };
+    DrumkitUI.prototype.createChanels = function () {
+        var _this = this;
+        var container = document.getElementById('chanels');
+        var _loop_1 = function (i) {
+            var chanelContainer = document.createElement('div');
             chanelContainer.classList.add("chanelContainer");
             // record button
-            const recordBtn = document.createElement('button');
-            recordBtn.className = `recordBtn`;
-            recordBtn.addEventListener('click', (ev) => this.activateChanel(i, ev));
+            var recordBtn = document.createElement('button');
+            recordBtn.className = "recordBtn";
+            recordBtn.addEventListener('click', function (ev) { return _this.activateChanel(i, ev); });
             chanelContainer.appendChild(recordBtn);
             // play button 
-            const playBtn = document.createElement('button');
-            playBtn.className = `playBtn`;
+            var playBtn = document.createElement('button');
+            playBtn.className = "playBtn";
             playBtn.disabled = true;
-            const s = playBtn.addEventListener('click', (ev) => this.onPlayStopChanel(i));
+            var s = playBtn.addEventListener('click', function (ev) { return _this.onPlayStopChanel(i); });
             chanelContainer.appendChild(playBtn);
             // progress bar 
-            const progressBarContainer = document.createElement('div');
-            progressBarContainer.className = `progressBar`;
-            const progressBar = document.createElement('span');
-            progressBar.addEventListener('animationend', () => {
+            var progressBarContainer = document.createElement('div');
+            progressBarContainer.className = "progressBar";
+            var progressBar = document.createElement('span');
+            progressBar.addEventListener('animationend', function () {
                 progressBar.style.animation = null;
-                this.chanelsDOMElements[i].playBtn.disabled = false;
+                _this.chanelsDOMElements[i].playBtn.disabled = false;
             });
             progressBarContainer.appendChild(progressBar);
             chanelContainer.appendChild(progressBarContainer);
-            this.chanelsDOMElements.push({
-                playBtn,
-                recordBtn,
-                progressBar
+            this_1.chanelsDOMElements.push({
+                playBtn: playBtn,
+                recordBtn: recordBtn,
+                progressBar: progressBar
             });
             container.appendChild(chanelContainer);
+        };
+        var this_1 = this;
+        for (var i = 0; i < CHANELS_COUNT; i++) {
+            _loop_1(i);
         }
-    }
-    activateChanel(chanelIndex, event) {
+    };
+    DrumkitUI.prototype.activateChanel = function (chanelIndex, event) {
         // this click event determintaes recording time
         this.chanels[chanelIndex] = [{
                 time: event.timeStamp,
                 key: null
             }];
         this.activeChanel = chanelIndex;
-        this.chanelsDOMElements.forEach(el => {
+        this.chanelsDOMElements.forEach(function (el) {
             el.recordBtn.disabled = true;
         });
         this.chanelsDOMElements[chanelIndex].playBtn.disabled = false;
         this.chanelsDOMElements[chanelIndex].playBtn.classList.add('stopBtn');
-    }
-    onPlayStopChanel(chanelIndex) {
+    };
+    DrumkitUI.prototype.onPlayStopChanel = function (chanelIndex) {
+        var _this = this;
         if (this.activeChanel === chanelIndex) {
             this.stopRecording(chanelIndex);
         }
         else {
             // play
-            const chanel = this.chanels[chanelIndex];
-            let prevTime = chanel[0].time;
+            var chanel = this.chanels[chanelIndex];
+            var prevTime_1 = chanel[0].time;
             this.initPlayingBehavior(chanelIndex);
-            chanel.forEach((sound) => {
-                const time = sound.time - prevTime;
-                setTimeout(() => {
-                    this.playSound(sound.key);
+            chanel.forEach(function (sound) {
+                var time = sound.time - prevTime_1;
+                setTimeout(function () {
+                    _this.playSound(sound.key);
                 }, time);
             });
         }
-    }
-    stopRecording(chanelIndex) {
+    };
+    DrumkitUI.prototype.stopRecording = function (chanelIndex) {
+        var _this = this;
         this.chanelsDOMElements[chanelIndex].playBtn.classList.remove('stopBtn');
-        const chanel = this.chanels[chanelIndex];
-        const recordingTime = chanel[chanel.length - 1].time - chanel[0].time;
-        this.chanelsDOMElements[chanelIndex].progressBar.parentElement.querySelectorAll('time').forEach(v => v.remove());
-        this.chanelsDOMElements.forEach(el => {
+        var chanel = this.chanels[chanelIndex];
+        var recordingTime = chanel[chanel.length - 1].time - chanel[0].time;
+        this.chanelsDOMElements[chanelIndex].progressBar.parentElement.querySelectorAll('time').forEach(function (v) { return v.remove(); });
+        this.chanelsDOMElements.forEach(function (el) {
             el.recordBtn.disabled = false;
         });
         if (recordingTime) {
-            chanel.forEach((sound) => {
-                const timeMoment = document.createElement('time');
-                const percentageTime = (sound.time - chanel[0].time) / recordingTime * 100;
+            chanel.splice(0, 1).forEach(function (sound) {
+                var timeMoment = document.createElement('time');
+                var percentageTime = (sound.time - chanel[0].time) / recordingTime * 100;
                 console.log(percentageTime);
                 timeMoment.className = "timeMoment";
-                timeMoment.style.left = `${percentageTime}%`;
-                this.chanelsDOMElements[chanelIndex].progressBar.parentElement.appendChild(timeMoment);
+                timeMoment.style.left = percentageTime + "%";
+                _this.chanelsDOMElements[chanelIndex].progressBar.parentElement.appendChild(timeMoment);
             });
         }
         else {
             this.chanelsDOMElements[chanelIndex].playBtn.disabled = true;
         }
         this.activeChanel = null;
-    }
-    initPlayingBehavior(chanelIndex) {
+    };
+    DrumkitUI.prototype.initPlayingBehavior = function (chanelIndex) {
         this.chanelsDOMElements[chanelIndex].playBtn.disabled = true;
         // animate progress bar
-        const chanel = this.chanels[chanelIndex];
-        let prevTime = chanel[0].time;
-        const recordingTime = `${(chanel[chanel.length - 1].time - prevTime).toFixed()}ms`;
-        this.chanelsDOMElements[chanelIndex].progressBar.style.animation = ``;
-        this.chanelsDOMElements[chanelIndex].progressBar.style.animation = `progressBarAnim ${recordingTime} forwards linear`;
-    }
-}
-const drumkit = new Drumkit();
+        var chanel = this.chanels[chanelIndex];
+        var prevTime = chanel[0].time;
+        var recordingTime = (chanel[chanel.length - 1].time - prevTime).toFixed() + "ms";
+        this.chanelsDOMElements[chanelIndex].progressBar.style.animation = "";
+        this.chanelsDOMElements[chanelIndex].progressBar.style.animation = "progressBarAnim " + recordingTime + " forwards linear";
+    };
+    return DrumkitUI;
+}());
+var drumkit = new Drumkit();

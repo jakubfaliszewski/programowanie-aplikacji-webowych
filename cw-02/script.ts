@@ -185,7 +185,7 @@ class DrumkitUI {
             el.recordBtn.disabled = false;
         })
         if (recordingTime) {
-            chanel.forEach((sound: ISound) => {
+            chanel.splice(0,1).forEach((sound: ISound) => {
                 const timeMoment = document.createElement('time');
                 const percentageTime = (sound.time - chanel[0].time) / recordingTime * 100;
                 console.log(percentageTime)

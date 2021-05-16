@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap" rel="stylesheet">
+  <title>Cw-04 - notatki</title>
+</head>
+
+<body>
+  <main>
+    <div class="main" id="main">
+      <header class="toolbar">
+        <div class="toolbar-buttons">
+          <button class="toolbar-button">
+            All
+          </button>
+          <!-- tag buttons here -->
+        </div>
+        <button class="newNote-button" id="add-note">
+          Add note
+        </button>
+      </header>
+      <div class="searchbar">
+        <input id="search" type="search" />
+      </div>
+      <section class="content">
+        <div class="content-pinned">
+          <p>Pinned</p>
+          <div class="notes" id="notes-pinned">
+            <!-- notes goes here -->
+          </div>
+        </div>
+        <div class="content-pinned">
+          <p>Other</p>
+          <div class="notes" id="notes-other">
+            <!-- notes goes here -->
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script src="index.js"></script>
+</body>
+
+</html>
