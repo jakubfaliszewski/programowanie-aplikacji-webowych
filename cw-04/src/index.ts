@@ -8,13 +8,8 @@ export class Main {
     UI: UI;
     notes: INote[];
     constructor() {
-        document.addEventListener('DOMContentLoaded', function (event) {
-            //the event occurred
-            this.UI = new UI(this);
-            this.notes = AppLocalStorage.getInstance().getFromLocalStorage();
-            this.UI.renderNotes(this.notes);
-            this.UI.renderToolbarTags();
-        })
+        this.UI = new UI();
+        this.UI.renderNotes();
     }
 
 }

@@ -1,10 +1,10 @@
 import { INote } from "./interface";
 
 interface IAppStorage {
-    saveToLocalStorage: (newNote: INote) => INote[],
-    removeFromLocalStorage: (id: INote['id']) => INote[],
-    getFromLocalStorage: () => INote[],
-    getAllTagsFromStorage: () => string[],
+    saveToLocalStorage: (newNote: INote) => Promise<INote[]>,
+    removeFromLocalStorage: (id: INote['id']) => Promise<INote[]>,
+    getFromLocalStorage: () => Promise<INote[]>,
+    getAllTagsFromStorage: () => Promise<string[]>,
 }
 
 // Singleton app storage
@@ -20,34 +20,35 @@ export class AppLocalStorage implements IAppStorage {
         return AppLocalStorage.instance;
     }
 
-    saveToLocalStorage = (newNote: INote) =>  {
+    async saveToLocalStorage(newNote: INote)  {
         const notes = JSON.parse(localStorage.getItem('CW04_Notes')) as INote[] ?? [];
         const existingIndex = notes.findIndex(v => v.id === newNote.id);    
         if (existingIndex !== -1) notes[existingIndex] = newNote;
         else notes.push(newNote);
         localStorage.setItem('CW04_Notes', JSON.stringify(notes));
-    
-        return notes;
+
+        return Promise.resolve(notes);
     }
     
-    removeFromLocalStorage(id: INote['id']) {
+    async removeFromLocalStorage(id: INote['id']) {
         const notes = JSON.parse(localStorage.getItem('CW04_Notes')) as INote[];
         notes.splice(notes.findIndex((v) => v.id === id), 1);
         localStorage.setItem('CW04_Notes', JSON.stringify(notes));
     
+        return Promise.resolve(notes);
         return notes;
     }
     
-    getFromLocalStorage() {
+    async getFromLocalStorage() {
         const notes = JSON.parse(localStorage.getItem('CW04_Notes')) as INote[] ?? [];
         
-        return notes;
+        return Promise.resolve(notes);
     }
 
-    getAllTagsFromStorage() {
+    async getAllTagsFromStorage() {
         const notes = JSON.parse(localStorage.getItem('CW04_Notes')) as INote[] ?? [];
         const tags = notes.flatMap((v) => v.tags);
 
-        return [... new Set(tags)];
+        return Promise.resolve([... new Set(tags)]);
     }
 }

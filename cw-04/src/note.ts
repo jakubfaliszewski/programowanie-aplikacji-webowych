@@ -39,7 +39,7 @@ export class Note {
         noteElPinBtn.addEventListener('click', (e: MouseEvent) => {
             e.stopPropagation();
             note.pinned = !note.pinned;
-            this.UI.renderNotes(AppLocalStorage.getInstance().saveToLocalStorage(note));
+            AppLocalStorage.getInstance().saveToLocalStorage(note).then(() => this.UI.renderNotes());
         })
 
         return noteElPinBtn;
@@ -54,7 +54,7 @@ export class Note {
         // -------
         noteElRemoveBtn.addEventListener('click', (e: MouseEvent) => {
             e.stopPropagation();
-            this.UI.renderNotes(AppLocalStorage.getInstance().removeFromLocalStorage(note.id));
+            AppLocalStorage.getInstance().removeFromLocalStorage(note.id).then(() =>  this.UI.renderNotes());
         })
 
         return noteElRemoveBtn;

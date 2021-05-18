@@ -65,8 +65,7 @@ export class Modal {
             color: (this.formElements.color.querySelector(':checked') as HTMLInputElement).value,
             tags: this.noteForm.tags
         });
-        this.UI.renderNotes(AppLocalStorage.getInstance().saveToLocalStorage(newNote));
-        this.UI.renderToolbarTags();
+        AppLocalStorage.getInstance().saveToLocalStorage(newNote).then(() => this.UI.renderNotes());
         this.closeModal(e);
     }
 
@@ -128,11 +127,11 @@ export class Modal {
         });
     }
 
-    createDatalistOptionsList() {
+    async createDatalistOptionsList() {
         const comboBoxDL = document.getElementById("note-tags");
         comboBoxDL.innerHTML = '';
 
-        const tags = AppLocalStorage.getInstance().getAllTagsFromStorage();
+        const tags = await AppLocalStorage.getInstance().getAllTagsFromStorage();
         const filteredTags = tags.filter((v) => !this.noteForm.tags.includes(v));
         filteredTags.forEach((v) => {
             const option = document.createElement('option');
