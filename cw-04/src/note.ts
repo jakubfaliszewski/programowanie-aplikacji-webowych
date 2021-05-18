@@ -1,21 +1,67 @@
+import { AppLocalStorage } from './appStorage';
 import { INote } from './interface';
-
-declare namespace JSX {
-    interface IntrinsicElements {
-        [elemName: string]: any;
-    }
-}
+import { Modal } from './modal';
+import { UI } from './UI';
+import { getDay } from './utils';
 
 export class Note {
-    constructor(note: INote, parent: HTMLElement) {
-        console.log(note);
+    UI: UI;
+    constructor(note: INote, parent: HTMLElement, UIInstance: UI) {
         this.render(note, parent)
+        this.UI = UIInstance;
+    }
+
+    createNoteElement(note: INote) {
+        const noteEl = document.createElement('div');
+        noteEl.className = 'note';
+        noteEl.style.backgroundColor = note.color;
+        noteEl.id = `noteEl_${note.id}`;
+        noteEl.tabIndex = 0;
+        noteEl.addEventListener('click', (e: MouseEvent) => {
+            new Modal(note, this.UI);
+        });
+        noteEl.addEventListener('keyup', (e: KeyboardEvent) => {
+            if (e.code === 'Enter' || e.code === 'Space') {
+                new Modal(note, this.UI);
+              }
+        });
+
+        return noteEl;
+    }
+
+    createPinBtn(note: INote) {
+        const noteElPinBtn = document.createElement('button');
+        noteElPinBtn.className = 'note-pin';
+        const noteElPinBtnIcon = document.createElement('img');
+        noteElPinBtnIcon.src  = './assets/pin.svg';
+        noteElPinBtn.appendChild(noteElPinBtnIcon);
+        // -------
+        noteElPinBtn.addEventListener('click', (e: MouseEvent) => {
+            e.stopPropagation();
+            note.pinned = !note.pinned;
+            this.UI.renderNotes(AppLocalStorage.getInstance().saveToLocalStorage(note));
+        })
+
+        return noteElPinBtn;
+    }
+
+    createRemoveBtn(note: INote) {
+        const noteElRemoveBtn = document.createElement('button');
+        noteElRemoveBtn.className = 'note-remove';
+        const noteElRemoveBtnIcon = document.createElement('img');
+        noteElRemoveBtnIcon.src  = './assets/remove.svg';
+        noteElRemoveBtn.appendChild(noteElRemoveBtnIcon);
+        // -------
+        noteElRemoveBtn.addEventListener('click', (e: MouseEvent) => {
+            e.stopPropagation();
+            this.UI.renderNotes(AppLocalStorage.getInstance().removeFromLocalStorage(note.id));
+        })
+
+        return noteElRemoveBtn;
     }
 
     render(note: INote, parent: HTMLElement) {
-        const noteEl = document.createElement('div');
-        noteEl.className = 'note';
-        noteEl.id = `noteEl_${note.id}`;
+        const noteEl = this.createNoteElement(note);
         // title
         const noteElTitle = document.createElement('p');
         noteElTitle.className = 'note-title';
@@ -24,9 +70,23 @@ export class Note {
         const noteElContent = document.createElement('p');
         noteElContent.className = 'note-content';
         noteElContent.innerText = note.content;
+        // pin button
+        const noteElPinBtn = this.createPinBtn(note);
+        // remove btn
+        const noteElRemoveBtn = this.createRemoveBtn(note);
+        // tags 
+        const noteTagsEl = document.createElement('ul');
+        noteTagsEl.className = "note-tags";
+        note.tags.forEach((v) => {
+            const tag = document.createElement('li');
+            tag.innerText = v;
+            noteTagsEl.appendChild(tag);
+        });
+        // date
+        const noteDateEl = document.createElement('time');
+        noteDateEl.innerText = getDay(note.date);
         // appending
-        noteEl.append(noteElTitle, noteElContent);
-
+        noteEl.append(noteElTitle, noteElContent, noteElPinBtn, noteTagsEl, noteDateEl, noteElRemoveBtn );
         parent.appendChild(noteEl);
     }
 }

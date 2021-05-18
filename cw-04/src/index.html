@@ -6,43 +6,71 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap" rel="stylesheet">
   <title>Cw-04 - notatki</title>
 </head>
 
 <body>
   <main>
     <div class="main" id="main">
+      <div class="searchbar">
+        <input id="search" type="text" placeholder="Filter notes" required autocomplete="off" />
+        <button class="searchbar-button"><img src="./assets/erase.svg" /></button>
+      </div>
       <header class="toolbar">
-        <div class="toolbar-buttons">
-          <button class="toolbar-button">
+        <div class="toolbar-buttons" id="toolbarTags">
+          <button class="toolbar-button toolbar-button--active">
             All
           </button>
           <!-- tag buttons here -->
         </div>
-        <button class="newNote-button" id="add-note">
+        <button class="toolbar-button newNote-button" id="add-note">
           Add note
+          <img src="assets/plus.svg" />
         </button>
       </header>
-      <div class="searchbar">
-        <input id="search" type="search" />
-      </div>
       <section class="content">
-        <div class="content-pinned">
-          <p>Pinned</p>
-          <div class="notes" id="notes-pinned">
-            <!-- notes goes here -->
-          </div>
+        <div class="notes notes--pinned" id="notes-pinned">
+          <!-- notes goes here -->
         </div>
-        <div class="content-pinned">
-          <p>Other</p>
-          <div class="notes" id="notes-other">
-            <!-- notes goes here -->
-          </div>
+        <div class="notes" id="notes-other">
+          <!-- notes goes here -->
         </div>
       </section>
     </div>
   </main>
+  <!-- modal layout defined here to avoid unneccesary JS -->
+  <div class="modal" id="modal">
+    <form class="modal-window">
+      <div class="modal-form" id="modal-form">
+        <input id="note-title" type="text" placeholder="Note title" required />
+        <textarea id="note-content" placeholder="Note content" rows="10"></textarea>
+        <div class="modal-color-picker" id="color-picker">
+        </div>
+        <label class="modal-toggle">
+          <input id="note-pinned" type="checkbox" />
+          <span class="styler"></span>
+          Pinned
+        </label>
+        <div class="modal-tags">
+          <div class="modal-existing-tags" id="current-tags"></div>
+          <div class="note-tag-container">
+            <input type="text" id="note-newTag" list="note-tags" placeholder="Add new tag" autocomplete="off"/>
+            <datalist id="note-tags">
+              <!-- <option value="Maine">
+              <option value="Maryland">
+              <option value="Massachusetts"> -->
+            </datalist>
+            <button id="add-tag" type="button">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-buttons">
+        <button type="button" id="close-modal-btn" class="modal-button">Close</button>
+        <button type="submit" id="save-modal-btn" class="modal-button modal-button-save">Save</button>
+      </div>
+    </form>
+  </div>
+  <img class="bg-illustration" src="assets/illustration.svg" />
   <script src="index.js"></script>
 </body>
 
