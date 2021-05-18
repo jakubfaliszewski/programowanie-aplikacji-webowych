@@ -47,6 +47,13 @@
 
         textarea {
             resize: none;
+            box-sizing: border-box;
+        }
+
+        &-container {
+            width: 100%;
+            gap: 1rem;
+            display: flex;
         }
     }
 
@@ -193,25 +200,69 @@
         .note-tag-container {
             display: flex;
             align-items: center;
-            button {
-                width: 2rem;
-                height: 2rem;
-                width: 30px;
-                height: 30px;
-                padding: 0;
-                border: 0;
-                font-size: 1.5rem;
-                background: $action-color;
-                color: $font-color;
-                transition: 0.2s;
-                flex-shrink: 0;
+        }
+    }
+    .modal-small-btn {
+        width: 2rem;
+        height: 2rem;
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        border: 0;
+        font-size: 1.5rem;
+        background: $unactive-color;
+        color: $font-color;
+        transition: 0.2s;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-                &:hover,
-                &:focus {
-                    outline: 0;
-                    background: $action-color-hover;
-                }
+        &:hover,
+        &:focus {
+            outline: 0;
+            background: $unactive-color-hover;
+        }
+
+        img {
+            width: 20px;
+        }
+
+        &--active {
+            background: $action-color;
+            &:hover,
+            &:focus {
+                outline: 0;
+                background: $action-color-hover;
             }
         }
+    }
+
+    .notification-content {
+        flex-direction: column;
+        gap: 0.5rem;
+        display: none;
+        input {
+            box-sizing: border-box;
+            &::-webkit-calendar-picker-indicator {
+                filter: invert(1);
+            }
+        }
+        &--visible {
+            display: flex;
+            animation: notifEntrance 0.2s;
+            transform-origin: left;
+        }
+    }
+}
+
+@keyframes notifEntrance {
+    from {
+        transform: scaleX(0);
+        max-width: 0;
+    }
+    to {
+        transform: scaleX(1);
+        max-width: 100%;
     }
 }

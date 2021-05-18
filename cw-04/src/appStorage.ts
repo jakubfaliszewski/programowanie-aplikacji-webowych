@@ -1,3 +1,4 @@
+import { AppNotifications } from "./notificationService";
 import { INote } from "./interface";
 
 interface IAppStorage {
@@ -20,28 +21,32 @@ export class AppLocalStorage implements IAppStorage {
         return AppLocalStorage.instance;
     }
 
-    async saveToLocalStorage(newNote: INote)  {
+    async saveToLocalStorage(newNote: INote) {
         const notes = JSON.parse(localStorage.getItem('CW04_Notes')) as INote[] ?? [];
-        const existingIndex = notes.findIndex(v => v.id === newNote.id);    
+        const existingIndex = notes.findIndex(v => v.id === newNote.id);
         if (existingIndex !== -1) notes[existingIndex] = newNote;
         else notes.push(newNote);
+
+        if (newNote.notification)
+            AppNotifications.getInstance().addNotification(newNote);
+
         localStorage.setItem('CW04_Notes', JSON.stringify(notes));
 
         return Promise.resolve(notes);
     }
-    
+
     async removeFromLocalStorage(id: INote['id']) {
         const notes = JSON.parse(localStorage.getItem('CW04_Notes')) as INote[];
         notes.splice(notes.findIndex((v) => v.id === id), 1);
         localStorage.setItem('CW04_Notes', JSON.stringify(notes));
-    
+
         return Promise.resolve(notes);
         return notes;
     }
-    
+
     async getFromLocalStorage() {
         const notes = JSON.parse(localStorage.getItem('CW04_Notes')) as INote[] ?? [];
-        
+
         return Promise.resolve(notes);
     }
 

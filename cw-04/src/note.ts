@@ -1,4 +1,5 @@
 import { AppLocalStorage } from './appStorage';
+import { AppNotifications } from './notificationService';
 import { INote } from './interface';
 import { Modal } from './modal';
 import { UI } from './UI';
@@ -19,11 +20,12 @@ export class Note {
         noteEl.tabIndex = 0;
         noteEl.addEventListener('click', (e: MouseEvent) => {
             new Modal(note, this.UI);
+            // AppNotifications.getInstance().addNotification(note);
         });
         noteEl.addEventListener('keyup', (e: KeyboardEvent) => {
             if (e.code === 'Enter' || e.code === 'Space') {
                 new Modal(note, this.UI);
-              }
+            }
         });
 
         return noteEl;
@@ -33,7 +35,7 @@ export class Note {
         const noteElPinBtn = document.createElement('button');
         noteElPinBtn.className = 'note-pin';
         const noteElPinBtnIcon = document.createElement('img');
-        noteElPinBtnIcon.src  = './assets/pin.svg';
+        noteElPinBtnIcon.src = note.pinned ? './assets/pin-filled.svg' : './assets/pin.svg';
         noteElPinBtn.appendChild(noteElPinBtnIcon);
         // -------
         noteElPinBtn.addEventListener('click', (e: MouseEvent) => {
@@ -49,12 +51,12 @@ export class Note {
         const noteElRemoveBtn = document.createElement('button');
         noteElRemoveBtn.className = 'note-remove';
         const noteElRemoveBtnIcon = document.createElement('img');
-        noteElRemoveBtnIcon.src  = './assets/remove.svg';
+        noteElRemoveBtnIcon.src = './assets/remove.svg';
         noteElRemoveBtn.appendChild(noteElRemoveBtnIcon);
         // -------
         noteElRemoveBtn.addEventListener('click', (e: MouseEvent) => {
             e.stopPropagation();
-            AppLocalStorage.getInstance().removeFromLocalStorage(note.id).then(() =>  this.UI.renderNotes());
+            AppLocalStorage.getInstance().removeFromLocalStorage(note.id).then(() => this.UI.renderNotes());
         })
 
         return noteElRemoveBtn;
@@ -85,8 +87,15 @@ export class Note {
         // date
         const noteDateEl = document.createElement('time');
         noteDateEl.innerText = getDay(note.date);
+        // notification time
+        const noteNotifEl = document.createElement('p');
+        noteNotifEl.className = "note-notif";
+        if (note.notification && note.notification > Date.now()) {
+            noteNotifEl.innerText = `Notification on ${getDay(note.notification)}`;
+        }
+
         // appending
-        noteEl.append(noteElTitle, noteElContent, noteElPinBtn, noteTagsEl, noteDateEl, noteElRemoveBtn );
+        noteEl.append(noteElTitle, noteElContent, noteElPinBtn, noteNotifEl, noteTagsEl, noteDateEl, noteElRemoveBtn);
         parent.appendChild(noteEl);
     }
 }

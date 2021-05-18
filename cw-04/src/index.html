@@ -42,8 +42,19 @@
   <div class="modal" id="modal">
     <form class="modal-window">
       <div class="modal-form" id="modal-form">
-        <input id="note-title" type="text" placeholder="Note title" required />
-        <textarea id="note-content" placeholder="Note content" rows="10"></textarea>
+        <div class="modal-form-container">
+          <input id="note-title" type="text" placeholder="Note title" required />
+          <button id="notif-btn" class="modal-small-btn" type="button">
+            <img src="assets/bell.svg"/>
+          </button>
+        </div>
+        <div class="modal-form-container">
+          <textarea id="note-content" placeholder="Note content" rows="10"></textarea>
+          <div class="notification-content" id="notification-content">
+            <input type="date" id="note-notif-date"/>
+            <input type="time" id="note-notif-time"/>
+          </div>
+        </div>
         <div class="modal-color-picker" id="color-picker">
         </div>
         <label class="modal-toggle">
@@ -60,7 +71,7 @@
               <option value="Maryland">
               <option value="Massachusetts"> -->
             </datalist>
-            <button id="add-tag" type="button">+</button>
+            <button id="add-tag" class="modal-small-btn modal-small-btn--active" type="button">+</button>
           </div>
         </div>
       </div>

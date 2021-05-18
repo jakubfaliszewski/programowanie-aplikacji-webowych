@@ -8,6 +8,7 @@ export class INoteGen {
     content: string = '';
     pinned: boolean = false;
     color: string = "#262626";
+    notification: number;
     tags: string[] = ['today', 'work'];
 }
 
@@ -25,6 +26,7 @@ export class INote extends INoteGen {
             this.pinned = data.pinned;
             this.color = data.color;
             this.tags = data.tags;
+            this.notification = data.notification;
         }
     }
 }
