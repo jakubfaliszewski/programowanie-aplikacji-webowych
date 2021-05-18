@@ -9,7 +9,7 @@ export class INoteGen {
     pinned: boolean = false;
     color: string = "#262626";
     notification: number;
-    tags: string[] = ['today', 'work'];
+    tags: string[] = [];
 }
 
 export class INote extends INoteGen {
