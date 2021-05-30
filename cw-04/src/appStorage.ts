@@ -90,9 +90,9 @@ export class AppFirestorageStorage implements IAppStorage {
         await this.db.collection('notes').add({ ...newNote });
         return Promise.resolve();
     }
-    
+
     async updateNote(newNote: INote, noteId: string) {
-        await this.db.collection('notes').doc(noteId).update({...newNote});
+        await this.db.collection('notes').doc(noteId).update({ ...newNote });
 
         return Promise.resolve();
     }
@@ -127,4 +127,15 @@ export class AppFirestorageStorage implements IAppStorage {
 }
 
 
-export default AppFirestorageStorage;
+let appStorage: typeof AppFirestorageStorage | typeof AppLocalStorage;
+
+switch (config.storageType) {
+    case storageType.AppFirestorageStorage:
+        appStorage = AppFirestorageStorage; break;
+    case storageType.AppLocalStorage:
+        appStorage = AppLocalStorage; break;
+    default:
+        appStorage = AppLocalStorage;
+}
+
+export default appStorage;
