@@ -1,5 +1,5 @@
-import { AppLocalStorage } from './appStorage';
 import { AppNotifications } from './notificationService';
+import AppStorage from './appStorage';
 import { INote } from './interface';
 import { Modal } from './modal';
 import { UI } from './UI';
@@ -41,7 +41,7 @@ export class Note {
         noteElPinBtn.addEventListener('click', (e: MouseEvent) => {
             e.stopPropagation();
             note.pinned = !note.pinned;
-            AppLocalStorage.getInstance().saveToLocalStorage(note).then(() => this.UI.renderNotes());
+            AppStorage.getInstance().saveToStorage(note).then(() => this.UI.renderNotes());
         })
 
         return noteElPinBtn;
@@ -56,7 +56,7 @@ export class Note {
         // -------
         noteElRemoveBtn.addEventListener('click', (e: MouseEvent) => {
             e.stopPropagation();
-            AppLocalStorage.getInstance().removeFromLocalStorage(note.id).then(() => this.UI.renderNotes());
+            AppStorage.getInstance().removeFromStorage(note.id).then(() => this.UI.renderNotes());
         })
 
         return noteElRemoveBtn;

@@ -1,6 +1,6 @@
 import { INote, NoteColors } from './interface';
 
-import { AppLocalStorage } from './appStorage';
+import AppStorage from './appStorage';
 import { UI } from './UI';
 
 export class Modal {
@@ -76,7 +76,7 @@ export class Modal {
             tags: this.noteForm.tags,
             notification: this.isNotification ? this.formatDate() : null
         });
-        AppLocalStorage.getInstance().saveToLocalStorage(newNote).then(() => this.UI.renderNotes());
+        AppStorage.getInstance().saveToStorage(newNote).then(() => this.UI.renderNotes());
         this.closeModal(e);
     }
 
@@ -167,7 +167,7 @@ export class Modal {
         const comboBoxDL = document.getElementById("note-tags");
         comboBoxDL.innerHTML = '';
 
-        const tags = await AppLocalStorage.getInstance().getAllTagsFromStorage();
+        const tags = await AppStorage.getInstance().getAllTagsStorage();
         const filteredTags = tags.filter((v) => !this.noteForm.tags.includes(v));
         filteredTags.forEach((v) => {
             const option = document.createElement('option');

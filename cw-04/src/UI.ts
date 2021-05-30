@@ -1,4 +1,4 @@
-import { AppLocalStorage } from './appStorage';
+import AppStorage from './appStorage';
 import { INote } from './interface';
 import { Main } from './index';
 import { Modal } from './modal';
@@ -22,7 +22,7 @@ export class UI {
     }
 
     async renderNotes() {
-        const notes = await AppLocalStorage.getInstance().getFromLocalStorage();
+        const notes = await AppStorage.getInstance().getFromStorage();
         const notesElP = document.getElementById('notes-pinned');
         const notesEl = document.getElementById('notes-other');
         notesEl.innerText = null; notesElP.innerText = null;

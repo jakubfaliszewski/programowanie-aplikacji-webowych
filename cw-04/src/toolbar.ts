@@ -1,4 +1,4 @@
-import { AppLocalStorage } from './appStorage';
+import AppStorage from './appStorage';
 import { UI } from './UI';
 
 export class Toolbar {
@@ -30,7 +30,7 @@ export class Toolbar {
     }
 
     async renderToolbarTags() {
-        const tags = await AppLocalStorage.getInstance().getAllTagsFromStorage();
+        const tags = await AppStorage.getInstance().getAllTagsStorage();
         const parentEl = document.getElementById('toolbarTags');
         parentEl.innerHTML = '';
         // render `All` btn
