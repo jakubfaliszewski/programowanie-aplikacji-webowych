@@ -6,8 +6,9 @@ import firebase from "firebase";
 import { firebaseConfig } from "./firebaseConfig";
 
 interface IAppStorage {
-    saveToStorage: (newNote: INote) => Promise<INote[]>,
-    removeFromStorage: (id: INote['id']) => Promise<INote[]>,
+    saveToStorage: (newNote: INote) => Promise<void>,
+    updateNote: (newNote: INote, noteId: string) => Promise<void>,
+    removeFromStorage: (id: INote['id']) => Promise<void>,
     getFromStorage: () => Promise<INote[]>,
     getAllTagsStorage: () => Promise<string[]>,
 }
@@ -27,16 +28,23 @@ export class AppLocalStorage implements IAppStorage {
 
     async saveToStorage(newNote: INote) {
         const notes = JSON.parse(localStorage.getItem('CW04_Notes')) as INote[] ?? [];
-        const existingIndex = notes.findIndex(v => v.id === newNote.id);
-        if (existingIndex !== -1) notes[existingIndex] = newNote;
-        else notes.push(newNote);
-
+        notes.push(newNote);
         if (newNote.notification)
             AppNotifications.getInstance().addNotification(newNote);
 
         localStorage.setItem('CW04_Notes', JSON.stringify(notes));
+        return Promise.resolve();
+    }
 
-        return Promise.resolve(notes);
+    async updateNote(newNote: INote, noteId: string) {
+        const notes = JSON.parse(localStorage.getItem('CW04_Notes')) as INote[] ?? [];
+        const existingIndex = notes.findIndex(v => v.id === newNote.id);
+        notes[existingIndex] = newNote;
+        if (newNote.notification)
+            AppNotifications.getInstance().addNotification(newNote);
+        localStorage.setItem('CW04_Notes', JSON.stringify(notes));
+
+        return Promise.resolve();
     }
 
     async removeFromStorage(id: INote['id']) {
@@ -44,8 +52,7 @@ export class AppLocalStorage implements IAppStorage {
         notes.splice(notes.findIndex((v) => v.id === id), 1);
         localStorage.setItem('CW04_Notes', JSON.stringify(notes));
 
-        return Promise.resolve(notes);
-        return notes;
+        return Promise.resolve();
     }
 
     async getFromStorage() {
@@ -65,8 +72,8 @@ export class AppLocalStorage implements IAppStorage {
 export class AppFirestorageStorage implements IAppStorage {
     private static instance: IAppStorage;
     db: firebase.firestore.Firestore;
-    
-    private constructor() { 
+
+    private constructor() {
         const firebaseApp = firebase.initializeApp(firebaseConfig);
         this.db = firebaseApp.firestore();
     }
@@ -80,31 +87,42 @@ export class AppFirestorageStorage implements IAppStorage {
     }
 
     async saveToStorage(newNote: INote) {
-        const res = await this.db.collection('notes').add({...newNote});
-        return Promise.resolve([]);
+        await this.db.collection('notes').add({ ...newNote });
+        return Promise.resolve();
+    }
+    
+    async updateNote(newNote: INote, noteId: string) {
+        await this.db.collection('notes').doc(noteId).update({...newNote});
+
+        return Promise.resolve();
     }
 
     async removeFromStorage(id: INote['id']) {
-        const notes = JSON.parse(localStorage.getItem('CW04_Notes')) as INote[];
-        notes.splice(notes.findIndex((v) => v.id === id), 1);
-        localStorage.setItem('CW04_Notes', JSON.stringify(notes));
-
-        return Promise.resolve(notes);
+        await this.db.collection('notes').doc(id).delete();
+        return Promise.resolve();
     }
 
     async getFromStorage() {
         const res = await this.db.collection('notes').get().then(res => ({
-            data: res.docs.map((res) => res.data())
+            data: res.docs.map((res) => ({
+                data: res.data(),
+                id: res.id
+            }))
         }));
-        const data = res.data as INote[];
-        return Promise.resolve(data);
+
+        // assign firebase ID to use in front-end
+        const data = res.data.map((note) => ({
+            ...note.data,
+            id: note.id,
+        }));
+        return Promise.resolve(data as INote[]);
     }
 
     async getAllTagsStorage() {
         const notes = await this.getFromStorage();
         const tags = notes.flatMap((v) => v.tags);
 
-        return Promise.resolve(tags);
+        return Promise.resolve([... new Set(tags)]);
     }
 }
 

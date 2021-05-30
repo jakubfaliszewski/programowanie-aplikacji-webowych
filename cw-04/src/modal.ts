@@ -10,6 +10,7 @@ export class Modal {
     notifBtn: HTMLButtonElement;
     modalEl: HTMLElement;
     noteForm: INote;
+    note: INote;
     UI: UI;
     isNotification: boolean;
     formElements: {
@@ -29,6 +30,7 @@ export class Modal {
         this.notifBtn = document.getElementById('notif-btn') as HTMLButtonElement;
         this.modalEl = document.getElementById('modal');
         this.UI = UIInstance;
+        this.note = note;
         this.formElements = {
             title: this.modalEl.querySelector('#note-title') as HTMLInputElement,
             content: this.modalEl.querySelector('#note-content') as HTMLTextAreaElement,
@@ -76,7 +78,10 @@ export class Modal {
             tags: this.noteForm.tags,
             notification: this.isNotification ? this.formatDate() : null
         });
-        AppStorage.getInstance().saveToStorage(newNote).then(() => this.UI.renderNotes());
+        if (!this.note)
+            AppStorage.getInstance().saveToStorage(newNote).then(() => this.UI.renderNotes());
+        else
+            AppStorage.getInstance().updateNote(newNote, newNote.id).then(() => this.UI.renderNotes());
         this.closeModal(e);
     }
 
@@ -110,7 +115,7 @@ export class Modal {
 
     formatDate() {
         const timestamp = new Date(`${this.formElements.notifDate.value} ${this.formElements.notifTime.value}`).getTime();
-        
+
         return timestamp;
     }
 

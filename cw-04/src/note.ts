@@ -41,7 +41,7 @@ export class Note {
         noteElPinBtn.addEventListener('click', (e: MouseEvent) => {
             e.stopPropagation();
             note.pinned = !note.pinned;
-            AppStorage.getInstance().saveToStorage(note).then(() => this.UI.renderNotes());
+            AppStorage.getInstance().updateNote(note, note.id).then(() => this.UI.renderNotes());
         })
 
         return noteElPinBtn;
