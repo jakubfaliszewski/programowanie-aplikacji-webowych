@@ -1,6 +1,4 @@
 import AppStorage from './appStorage';
-import { INote } from './interface';
-import { Main } from './index';
 import { Modal } from './modal';
 import { Note } from './note';
 import { Toolbar } from './toolbar';
