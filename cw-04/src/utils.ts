@@ -4,7 +4,6 @@ function getDay(dt: number, timezoneOffset: number = 0): string {
     return stringDate;
 }
 
-
 export {
     getDay
 };
