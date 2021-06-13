@@ -47,9 +47,12 @@ export class AppFirestorageStorage implements IAppStorage {
 
         // assign firebase ID to use in front-end
         const data = res.data.map((note) => ({
-            ...note.data,
+            ...note.data as INote,
             id: note.id,
-        }));
+        })).sort((a, b) => {
+            return a.date - b.date;
+        });
+        console.log(data);
         return Promise.resolve(data as INote[]);
     }
 
